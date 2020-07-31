@@ -1,0 +1,47 @@
+INFO  @ Tue, 28 Jul 2020 22:06:01: 
+# Command line: callpeak -f BAMPE -g hs --keep-dup all --cutoff-analysis -n S4 -t S4.filtered.shifted.bam --outdir macs2/S4
+# ARGUMENTS LIST:
+# name = S4
+# format = BAMPE
+# ChIP-seq file = ['S4.filtered.shifted.bam']
+# control file = None
+# effective genome size = 2.70e+09
+# band width = 300
+# model fold = [5, 50]
+# qvalue cutoff = 5.00e-02
+# The maximum gap between significant sites is assigned as the read length/tag size.
+# The minimum length of peaks is assigned as the predicted fragment length "d".
+# Larger dataset will be scaled towards smaller dataset.
+# Range for calculating regional lambda is: 10000 bps
+# Broad region calling is off
+# Paired-End mode is on
+ 
+INFO  @ Tue, 28 Jul 2020 22:06:01: #1 read fragment files... 
+INFO  @ Tue, 28 Jul 2020 22:06:01: #1 read treatment fragments... 
+INFO  @ Tue, 28 Jul 2020 22:06:04:  1000000 
+INFO  @ Tue, 28 Jul 2020 22:06:06:  2000000 
+INFO  @ Tue, 28 Jul 2020 22:06:09:  3000000 
+INFO  @ Tue, 28 Jul 2020 22:06:11:  4000000 
+INFO  @ Tue, 28 Jul 2020 22:06:13:  5000000 
+INFO  @ Tue, 28 Jul 2020 22:06:16:  6000000 
+INFO  @ Tue, 28 Jul 2020 22:06:18:  7000000 
+INFO  @ Tue, 28 Jul 2020 22:06:20:  8000000 
+INFO  @ Tue, 28 Jul 2020 22:06:22:  9000000 
+INFO  @ Tue, 28 Jul 2020 22:06:25:  10000000 
+INFO  @ Tue, 28 Jul 2020 22:06:27:  11000000 
+INFO  @ Tue, 28 Jul 2020 22:06:28: 11236237 fragments have been read. 
+INFO  @ Tue, 28 Jul 2020 22:06:32: #1 mean fragment size is determined as 158.2 bp from treatment 
+INFO  @ Tue, 28 Jul 2020 22:06:32: #1 fragment size = 158.2 
+INFO  @ Tue, 28 Jul 2020 22:06:32: #1  total fragments in treatment: 11236237 
+INFO  @ Tue, 28 Jul 2020 22:06:32: #1 finished! 
+INFO  @ Tue, 28 Jul 2020 22:06:32: #2 Build Peak Model... 
+INFO  @ Tue, 28 Jul 2020 22:06:32: #2 Skipped... 
+INFO  @ Tue, 28 Jul 2020 22:06:32: #3 Call peaks... 
+INFO  @ Tue, 28 Jul 2020 22:06:32: #3 Pre-compute pvalue-qvalue table... 
+INFO  @ Tue, 28 Jul 2020 22:06:32: #3 Cutoff vs peaks called will be analyzed! 
+INFO  @ Tue, 28 Jul 2020 22:07:23: #3 Analysis of cutoff vs num of peaks or total length has been saved in b'macs2/S4/S4_cutoff_analysis.txt' 
+INFO  @ Tue, 28 Jul 2020 22:07:23: #3 Call peaks for each chromosome... 
+INFO  @ Tue, 28 Jul 2020 22:07:41: #4 Write output xls file... macs2/S4/S4_peaks.xls 
+INFO  @ Tue, 28 Jul 2020 22:07:42: #4 Write peak in narrowPeak format file... macs2/S4/S4_peaks.narrowPeak 
+INFO  @ Tue, 28 Jul 2020 22:07:42: #4 Write summits bed file... macs2/S4/S4_summits.bed 
+INFO  @ Tue, 28 Jul 2020 22:07:42: Done! 

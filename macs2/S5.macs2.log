@@ -1,0 +1,38 @@
+INFO  @ Tue, 28 Jul 2020 22:07:46: 
+# Command line: callpeak -f BAMPE -g hs --keep-dup all --cutoff-analysis -n S5 -t S5.filtered.shifted.bam --outdir macs2/S5
+# ARGUMENTS LIST:
+# name = S5
+# format = BAMPE
+# ChIP-seq file = ['S5.filtered.shifted.bam']
+# control file = None
+# effective genome size = 2.70e+09
+# band width = 300
+# model fold = [5, 50]
+# qvalue cutoff = 5.00e-02
+# The maximum gap between significant sites is assigned as the read length/tag size.
+# The minimum length of peaks is assigned as the predicted fragment length "d".
+# Larger dataset will be scaled towards smaller dataset.
+# Range for calculating regional lambda is: 10000 bps
+# Broad region calling is off
+# Paired-End mode is on
+ 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #1 read fragment files... 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #1 read treatment fragments... 
+INFO  @ Tue, 28 Jul 2020 22:07:46: 2270 fragments have been read. 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #1 mean fragment size is determined as 262.6 bp from treatment 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #1 fragment size = 262.6 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #1  total fragments in treatment: 2270 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #1 finished! 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #2 Build Peak Model... 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #2 Skipped... 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #3 Call peaks... 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #3 Pre-compute pvalue-qvalue table... 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #3 Cutoff vs peaks called will be analyzed! 
+ZeroDivisionError: division by zero
+Exception ignored in: 'MACS2.IO.CallPeakUnit.CallerFromAlignments.__pre_computes'
+ZeroDivisionError: division by zero
+INFO  @ Tue, 28 Jul 2020 22:07:46: #3 Call peaks for each chromosome... 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #4 Write output xls file... macs2/S5/S5_peaks.xls 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #4 Write peak in narrowPeak format file... macs2/S5/S5_peaks.narrowPeak 
+INFO  @ Tue, 28 Jul 2020 22:07:46: #4 Write summits bed file... macs2/S5/S5_summits.bed 
+INFO  @ Tue, 28 Jul 2020 22:07:46: Done! 
