@@ -1,0 +1,38 @@
+INFO  @ Sat, 18 Jul 2020 19:29:16: 
+# Command line: callpeak -f BAMPE -g hs --keep-dup all --cutoff-analysis -n SRR10426652 -t SRR10426652.filtered.shifted.bam --outdir macs2/SRR10426652
+# ARGUMENTS LIST:
+# name = SRR10426652
+# format = BAMPE
+# ChIP-seq file = ['SRR10426652.filtered.shifted.bam']
+# control file = None
+# effective genome size = 2.70e+09
+# band width = 300
+# model fold = [5, 50]
+# qvalue cutoff = 5.00e-02
+# The maximum gap between significant sites is assigned as the read length/tag size.
+# The minimum length of peaks is assigned as the predicted fragment length "d".
+# Larger dataset will be scaled towards smaller dataset.
+# Range for calculating regional lambda is: 10000 bps
+# Broad region calling is off
+# Paired-End mode is on
+ 
+INFO  @ Sat, 18 Jul 2020 19:29:16: #1 read fragment files... 
+INFO  @ Sat, 18 Jul 2020 19:29:16: #1 read treatment fragments... 
+INFO  @ Sat, 18 Jul 2020 19:29:19:  1000000 
+INFO  @ Sat, 18 Jul 2020 19:29:22:  2000000 
+INFO  @ Sat, 18 Jul 2020 19:29:23: 2286621 fragments have been read. 
+INFO  @ Sat, 18 Jul 2020 19:29:24: #1 mean fragment size is determined as 251.1 bp from treatment 
+INFO  @ Sat, 18 Jul 2020 19:29:24: #1 fragment size = 251.1 
+INFO  @ Sat, 18 Jul 2020 19:29:24: #1  total fragments in treatment: 2286621 
+INFO  @ Sat, 18 Jul 2020 19:29:24: #1 finished! 
+INFO  @ Sat, 18 Jul 2020 19:29:24: #2 Build Peak Model... 
+INFO  @ Sat, 18 Jul 2020 19:29:24: #2 Skipped... 
+INFO  @ Sat, 18 Jul 2020 19:29:24: #3 Call peaks... 
+INFO  @ Sat, 18 Jul 2020 19:29:24: #3 Pre-compute pvalue-qvalue table... 
+INFO  @ Sat, 18 Jul 2020 19:29:24: #3 Cutoff vs peaks called will be analyzed! 
+INFO  @ Sat, 18 Jul 2020 19:29:40: #3 Analysis of cutoff vs num of peaks or total length has been saved in b'macs2/SRR10426652/SRR10426652_cutoff_analysis.txt' 
+INFO  @ Sat, 18 Jul 2020 19:29:40: #3 Call peaks for each chromosome... 
+INFO  @ Sat, 18 Jul 2020 19:29:44: #4 Write output xls file... macs2/SRR10426652/SRR10426652_peaks.xls 
+INFO  @ Sat, 18 Jul 2020 19:29:44: #4 Write peak in narrowPeak format file... macs2/SRR10426652/SRR10426652_peaks.narrowPeak 
+INFO  @ Sat, 18 Jul 2020 19:29:44: #4 Write summits bed file... macs2/SRR10426652/SRR10426652_summits.bed 
+INFO  @ Sat, 18 Jul 2020 19:29:44: Done! 

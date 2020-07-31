@@ -1,0 +1,55 @@
+INFO  @ Sat, 18 Jul 2020 19:29:17: 
+# Command line: callpeak -f BAMPE -g hs --keep-dup all --cutoff-analysis -n SRR10426651 -t SRR10426651.filtered.shifted.bam --outdir macs2/SRR10426651
+# ARGUMENTS LIST:
+# name = SRR10426651
+# format = BAMPE
+# ChIP-seq file = ['SRR10426651.filtered.shifted.bam']
+# control file = None
+# effective genome size = 2.70e+09
+# band width = 300
+# model fold = [5, 50]
+# qvalue cutoff = 5.00e-02
+# The maximum gap between significant sites is assigned as the read length/tag size.
+# The minimum length of peaks is assigned as the predicted fragment length "d".
+# Larger dataset will be scaled towards smaller dataset.
+# Range for calculating regional lambda is: 10000 bps
+# Broad region calling is off
+# Paired-End mode is on
+ 
+INFO  @ Sat, 18 Jul 2020 19:29:17: #1 read fragment files... 
+INFO  @ Sat, 18 Jul 2020 19:29:17: #1 read treatment fragments... 
+INFO  @ Sat, 18 Jul 2020 19:29:22:  1000000 
+INFO  @ Sat, 18 Jul 2020 19:29:28:  2000000 
+INFO  @ Sat, 18 Jul 2020 19:29:33:  3000000 
+INFO  @ Sat, 18 Jul 2020 19:29:38:  4000000 
+INFO  @ Sat, 18 Jul 2020 19:29:43:  5000000 
+INFO  @ Sat, 18 Jul 2020 19:29:48:  6000000 
+INFO  @ Sat, 18 Jul 2020 19:29:54:  7000000 
+INFO  @ Sat, 18 Jul 2020 19:29:59:  8000000 
+INFO  @ Sat, 18 Jul 2020 19:30:04:  9000000 
+INFO  @ Sat, 18 Jul 2020 19:30:09:  10000000 
+INFO  @ Sat, 18 Jul 2020 19:30:14:  11000000 
+INFO  @ Sat, 18 Jul 2020 19:30:20:  12000000 
+INFO  @ Sat, 18 Jul 2020 19:30:25:  13000000 
+INFO  @ Sat, 18 Jul 2020 19:30:30:  14000000 
+INFO  @ Sat, 18 Jul 2020 19:30:36:  15000000 
+INFO  @ Sat, 18 Jul 2020 19:30:41:  16000000 
+INFO  @ Sat, 18 Jul 2020 19:30:46:  17000000 
+INFO  @ Sat, 18 Jul 2020 19:30:51:  18000000 
+INFO  @ Sat, 18 Jul 2020 19:30:56:  19000000 
+INFO  @ Sat, 18 Jul 2020 19:31:01: 19701793 fragments have been read. 
+INFO  @ Sat, 18 Jul 2020 19:31:20: #1 mean fragment size is determined as 241.7 bp from treatment 
+INFO  @ Sat, 18 Jul 2020 19:31:20: #1 fragment size = 241.7 
+INFO  @ Sat, 18 Jul 2020 19:31:20: #1  total fragments in treatment: 19701793 
+INFO  @ Sat, 18 Jul 2020 19:31:20: #1 finished! 
+INFO  @ Sat, 18 Jul 2020 19:31:20: #2 Build Peak Model... 
+INFO  @ Sat, 18 Jul 2020 19:31:20: #2 Skipped... 
+INFO  @ Sat, 18 Jul 2020 19:31:20: #3 Call peaks... 
+INFO  @ Sat, 18 Jul 2020 19:31:20: #3 Pre-compute pvalue-qvalue table... 
+INFO  @ Sat, 18 Jul 2020 19:31:20: #3 Cutoff vs peaks called will be analyzed! 
+INFO  @ Sat, 18 Jul 2020 19:34:39: #3 Analysis of cutoff vs num of peaks or total length has been saved in b'macs2/SRR10426651/SRR10426651_cutoff_analysis.txt' 
+INFO  @ Sat, 18 Jul 2020 19:34:39: #3 Call peaks for each chromosome... 
+INFO  @ Sat, 18 Jul 2020 19:36:13: #4 Write output xls file... macs2/SRR10426651/SRR10426651_peaks.xls 
+INFO  @ Sat, 18 Jul 2020 19:36:14: #4 Write peak in narrowPeak format file... macs2/SRR10426651/SRR10426651_peaks.narrowPeak 
+INFO  @ Sat, 18 Jul 2020 19:36:14: #4 Write summits bed file... macs2/SRR10426651/SRR10426651_summits.bed 
+INFO  @ Sat, 18 Jul 2020 19:36:14: Done! 
