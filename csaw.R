@@ -2,14 +2,17 @@
 # https://bioconductor.org/packages/3.11/workflows/vignettes/chipseqDB/inst/doc/h3k9ac.html
 
 
-BiocManager::install('csaw')
+BiocManager::install('org.Hs.eg.db')
 library(csaw)
 library(Rsamtools)
 library(edgeR)
 library(ChIPpeakAnno)
 library(statmod)
-library(TxDb.Hsapiens.UCSC.hg19.knownGene)
-txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+library(tidyverse)
+library(Gviz)
+
+library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
 
 
 files <- list.files(pattern = ".bam$", full.names = T,recursive=T) #List of files to concatenate
@@ -81,7 +84,6 @@ lfit <- smooth.spline(norm.fc~win.ab, df=5)
 lines(win.ab[o], fitted(lfit)[o], col="red", lty=2)
 
 celltype <- acdata$Lipid
-
 celltype <- factor(celltype)
 design <- model.matrix(~0+celltype)
 colnames(design) <- levels(celltype)
@@ -134,14 +136,14 @@ saveRDS(file="brant_results.rds", out.ranges)
 
 simplified <- out.ranges[is.sig]
 simplified$score <- -10*log10(simplified$FDR)
-export(con="brant_results.bed", object=simplified)
+export(con="brant_results.bed", object=simplified, format="csv")
 
 
 
 
 # Interpretation
 
-anno <- detailRanges(out.ranges, orgdb=org.Mm.eg.db, txdb=TxDb.Mmusculus.UCSC.mm10.knownGene)
+anno <- detailRanges(out.ranges, orgdb=org.Hs.eg.db, txdb=txdb)
 head(anno$overlap)
 
 head(anno$left)
@@ -149,3 +151,35 @@ head(anno$right)
 
 meta <- mcols(out.ranges)
 mcols(out.ranges) <- data.frame(meta, anno)
+
+
+data(TSS.human.GRCh38)
+minimal <- out.ranges
+elementMetadata(minimal) <- NULL
+anno.regions <- annotatePeakInBatch(minimal, AnnotationData=TSS.human.GRCh38)
+colnames(elementMetadata(anno.regions))
+
+
+
+prom <- suppressWarnings(promoters(txdb,
+                                   upstream=3000, downstream=1000, columns=c("tx_name", "gene_id")))
+entrez.ids <- sapply(prom$gene_id, FUN=function(x) x[1]) # Using the first Entrez ID.
+gene.name <- select(org.Hs.eg.db, keys=entrez.ids, keytype="ENTREZID", column="SYMBOL")
+prom$gene_name <- gene.name$SYMBOL[match(entrez.ids, gene.name$ENTREZID)]
+head(prom)
+
+olap.out <- overlapResults(filtered.data, regions=prom, res$table)
+olap.out
+
+simple <- DataFrame(ID=prom$tx_name, Gene=prom$gene_name, olap.out$combined)
+simple[!is.na(simple$PValue),]
+
+
+
+
+gax <- GenomeAxisTrack(col="black", fontsize=15, size=2)
+greg <- GeneRegionTrack(txdb, showId=TRUE,
+                        geneSymbol=TRUE, name="", background.title="transparent")
+symbols <- unlist(mapIds(org.Hs.eg.db, gene(greg), "SYMBOL",
+                         "ENTREZID", multiVals = "first"))
+symbol(greg) <- symbols[gene(greg)]
