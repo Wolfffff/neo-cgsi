@@ -7,12 +7,13 @@ library(csaw)
 library(Rsamtools)
 library(edgeR)
 library(ChIPpeakAnno)
+library(statmod)
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 
 
 files <- list.files(pattern = ".bam$", full.names = T,recursive=T) #List of files to concatenate
-acdata <- data.frame(Path=files,Name=basename(files),Description = c("S1","S4","S7"),Lipid=c(FALSE,FALSE,TRUE))
+acdata <- data.frame(Path=files,Name=basename(files),Description = c("S1","S4","S7"),Lipid=c("No","No","Yes"))
 
 diagnostics <- list()
 for (bam in files) {
@@ -67,6 +68,18 @@ lfit <- smooth.spline(logfc~win.ab, df=5)
 o <- order(win.ab)
 lines(win.ab[o], fitted(lfit)[o], col="red", lty=2)
 
+filtered.data <- normOffsets(filtered.data)
+offsets <- assay(filtered.data, "offset")
+head(offsets)
+
+norm.adjc <- calculateCPM(filtered.data, use.offsets=TRUE)
+norm.fc <- norm.adjc[,3]-norm.adjc[,2]
+smoothScatter(win.ab, norm.fc, ylim=c(-6, 6), xlim=c(0, 5),
+              xlab="Average abundance", ylab="Log-fold change")
+
+lfit <- smooth.spline(norm.fc~win.ab, df=5)
+lines(win.ab[o], fitted(lfit)[o], col="red", lty=2)
+
 celltype <- acdata$Lipid
 
 celltype <- factor(celltype)
@@ -91,7 +104,7 @@ summary(fit$df.prior)
 plotMDS(norm.adjc, labels=celltype,
         col=c("red", "blue")[as.integer(celltype)])
 
-contrast <- makeContrasts(proB-matureB, levels=design)
+contrast <- makeContrasts(No-Yes, levels=design)
 res <- glmQLFTest(fit, contrast=contrast)
 head(res$table)
 
