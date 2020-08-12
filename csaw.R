@@ -1,8 +1,6 @@
 # Ref:
 # https://bioconductor.org/packages/3.11/workflows/vignettes/chipseqDB/inst/doc/h3k9ac.html
 
-
-BiocManager::install('org.Hs.eg.db')
 library(csaw)
 library(Rsamtools)
 library(edgeR)
@@ -136,16 +134,20 @@ saveRDS(file="brant_results.rds", out.ranges)
 
 simplified <- out.ranges[is.sig]
 simplified$score <- -10*log10(simplified$FDR)
-export(con="brant_results.bed", object=simplified, format="csv")
+export(con="brant_results.bed", object=simplified)
 
+
+filtered = out.ranges[order(out.ranges$FDR)]
+FDR_filtered = filtered[filtered$FDR < 0.05]
+out.ranges = FDR_filtered
 
 
 
 # Interpretation
 
 anno <- detailRanges(out.ranges, orgdb=org.Hs.eg.db, txdb=txdb)
-head(anno$overlap)
 
+head(anno$overlap)
 head(anno$left)
 head(anno$right)
 
@@ -161,8 +163,7 @@ colnames(elementMetadata(anno.regions))
 
 
 
-prom <- suppressWarnings(promoters(txdb,
-                                   upstream=3000, downstream=1000, columns=c("tx_name", "gene_id")))
+prom <- suppressWarnings(promoters(txdb,upstream=3000, downstream=1000, columns=c("tx_name", "gene_id")))
 entrez.ids <- sapply(prom$gene_id, FUN=function(x) x[1]) # Using the first Entrez ID.
 gene.name <- select(org.Hs.eg.db, keys=entrez.ids, keytype="ENTREZID", column="SYMBOL")
 prom$gene_name <- gene.name$SYMBOL[match(entrez.ids, gene.name$ENTREZID)]
@@ -176,7 +177,6 @@ simple[!is.na(simple$PValue),]
 
 
 
-
 gax <- GenomeAxisTrack(col="black", fontsize=15, size=2)
 greg <- GeneRegionTrack(txdb, showId=TRUE,
                         geneSymbol=TRUE, name="", background.title="transparent")
@@ -187,8 +187,6 @@ symbol(greg) <- symbols[gene(greg)]
 o <- order(out.ranges$PValue)
 sorted.ranges <- out.ranges[o]
 sorted.ranges
-
-
 
 cur.region <- sorted.ranges[1]
 cur.region
@@ -207,6 +205,8 @@ plotTracks(c(gax, collected, greg), chromosome=as.character(seqnames(cur.region)
 
 
 
+# No complex differential binding
+
 complex <- sorted.ranges$num.up.logFC > 0 & sorted.ranges$num.down.logFC > 0
 cur.region <- sorted.ranges[complex][2]
 cur.region
@@ -223,6 +223,8 @@ plotTracks(c(gax, collected, greg), chromosome=as.character(seqnames(cur.region)
            from=start(cur.region), to=end(cur.region))
 
 
+# Simple DB across small region
+
 sharp <- sorted.ranges$num.tests < 20
 cur.region <- sorted.ranges[sharp][1]
 cur.region
@@ -237,3 +239,6 @@ for (i in seq_along(acdata$Path)) {
 }
 plotTracks(c(gax, collected, greg), chromosome=as.character(seqnames(cur.region)),
            from=start(cur.region), to=end(cur.region))
+
+
+sessionInfo()
