@@ -183,3 +183,57 @@ greg <- GeneRegionTrack(txdb, showId=TRUE,
 symbols <- unlist(mapIds(org.Hs.eg.db, gene(greg), "SYMBOL",
                          "ENTREZID", multiVals = "first"))
 symbol(greg) <- symbols[gene(greg)]
+
+o <- order(out.ranges$PValue)
+sorted.ranges <- out.ranges[o]
+sorted.ranges
+
+
+
+cur.region <- sorted.ranges[1]
+cur.region
+
+collected <- list()
+lib.sizes <- filtered.data$totals/1e6
+for (i in seq_along(acdata$Path)) {
+  reads <- extractReads(bam.file=acdata$Path[i], cur.region, param=param)
+  cov <- as(coverage(reads)/lib.sizes[i], "GRanges")
+  collected[[i]] <- DataTrack(cov, type="histogram", lwd=0, ylim=c(0,10),
+                              name=acdata$Description[i], col.axis="black", col.title="black",
+                              fill="darkgray", col.histogram=NA)
+}
+plotTracks(c(gax, collected, greg), chromosome=as.character(seqnames(cur.region)),
+           from=start(cur.region), to=end(cur.region))
+
+
+
+complex <- sorted.ranges$num.up.logFC > 0 & sorted.ranges$num.down.logFC > 0
+cur.region <- sorted.ranges[complex][2]
+cur.region
+
+collected <- list()
+for (i in seq_along(acdata$Path)) {
+  reads <- extractReads(bam.file=acdata$Path[i], cur.region, param=param)
+  cov <- as(coverage(reads)/lib.sizes[i], "GRanges")
+  collected[[i]] <- DataTrack(cov, type="histogram", lwd=0, ylim=c(0,3),
+                              name=acdata$Description[i], col.axis="black", col.title="black",
+                              fill="darkgray", col.histogram=NA)
+}
+plotTracks(c(gax, collected, greg), chromosome=as.character(seqnames(cur.region)),
+           from=start(cur.region), to=end(cur.region))
+
+
+sharp <- sorted.ranges$num.tests < 20
+cur.region <- sorted.ranges[sharp][1]
+cur.region
+
+collected <- list()
+for (i in seq_along(acdata$Path)) {
+  reads <- extractReads(bam.file=acdata$Path[i], cur.region, param=param)
+  cov <- as(coverage(reads)/lib.sizes[i], "GRanges")
+  collected[[i]] <- DataTrack(cov, type="histogram", lwd=0, ylim=c(0,3),
+                              name=acdata$Description[i], col.axis="black", col.title="black",
+                              fill="darkgray", col.histogram=NA)
+}
+plotTracks(c(gax, collected, greg), chromosome=as.character(seqnames(cur.region)),
+           from=start(cur.region), to=end(cur.region))

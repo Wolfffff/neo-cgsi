@@ -6,6 +6,16 @@ library(ChIPseeker)
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 
+library(scales)
+
+mylog10_trans <- function (base = 10) 
+{
+  trans <- function(x) log(x + 1, base)
+  inv <- function(x) base^x
+  trans_new(paste0("log-", format(base)), trans, inv, log_breaks(base = base), 
+            domain = c(1e-100, Inf))
+}
+
 curr_time <- function(){
   return(format(Sys.time(), "%d%m%Y_%H%M"))
 }
@@ -29,13 +39,14 @@ for (file in files) {
 for (name in names(samples)){
   sample = samples[[name]]
   print(ggplot(sample,aes(x=TSS_Nearest.distance)) +
-    geom_histogram(aes(y=..density..),binwidth=1000,col="darkblue") +
+    geom_histogram(,binwidth=1000,col="darkblue") +
     xlim(-1e5,1e5) +
     xlab("Distance") +
     ylab("Count") + 
     ggtitle(paste0("Nearest TSS Distribution - ",name," - ",curr_time())) +
-    theme_minimal())
-  # ggsave(file=paste0(plots_dir,"NearestTSS_",name,"_",curr_time(),".png"))
+    theme_minimal()) +
+    scale_y_log10()
+   ggsave(file=paste0(plots_dir,"NearestTSS_LogCount_",name,"_",curr_time(),".png"))
 }
 ggplot(samples[[1]],aes(x=TSS_Nearest.distance)) +
           geom_histogram(aes(y=..density..,fill="red"),binwidth=2000,alpha=.4) +
@@ -65,17 +76,47 @@ ggplot(samples[[1]],aes(x=TSS_Nearest.distance)) +
 
 
 
-peaks = readPeakFile(files[[2]])
+
 # covplot(peaks, weightCol="V5")
 
+peaks = readPeakFile(files[[1]])
 promoter <- getPromoters(TxDb=txdb, upstream=3000, downstream=3000)
 tagMatrix <- getTagMatrix(peaks, windows=promoter)
-tagHeatmap(tagMatrix, xlim=c(-3000, 3000), color="red")
-
-plotAvgProf(tagMatrix, xlim=c(-3000, 3000),xlab="Genomic Region (5'->3')", ylab = "Read Count Frequency")
-plotAvgProf(tagMatrix, xlim=c(-3000, 3000), conf = 0.95, resample = 1000)
+sample_title = "S1"
+tagHeatmap(tagMatrix, xlim=c(-3000, 3000), color="red",title=sample_title,xlab="Distance from TSS",ylab="Peak #")
+plotAvgProf(tagMatrix, xlim=c(-3000, 3000),xlab="Genomic Region (5'->3')", ylab = "Read Count Frequency",title=sample_title)
 peakAnno <- annotatePeak(files[[1]], tssRegion=c(-3000, 3000),TxDb=txdb, annoDb="org.Hs.eg.db")
 plotAnnoPie(peakAnno)
 plotAnnoBar(peakAnno)
 vennpie(peakAnno)
 upsetplot(peakAnno)
+
+peaks = readPeakFile(files[[2]])
+promoter <- getPromoters(TxDb=txdb, upstream=3000, downstream=3000)
+tagMatrix <- getTagMatrix(peaks, windows=promoter)
+sample_title = "S4"
+tagHeatmap(tagMatrix, xlim=c(-3000, 3000), color="red",title=sample_title,xlab="Distance from TSS",ylab="Peak #")
+plotAvgProf(tagMatrix, xlim=c(-3000, 3000),xlab="Genomic Region (5'->3')", ylab = "Read Count Frequency",title=sample_title)
+peakAnno <- annotatePeak(files[[2]], tssRegion=c(-3000, 3000),TxDb=txdb, annoDb="org.Hs.eg.db")
+plotAnnoPie(peakAnno)
+plotAnnoBar(peakAnno)
+vennpie(peakAnno)
+upsetplot(peakAnno)
+
+
+peaks = readPeakFile(files[[3]])
+promoter <- getPromoters(TxDb=txdb, upstream=3000, downstream=3000)
+tagMatrix <- getTagMatrix(peaks, windows=promoter)
+sample_title = "S7"
+tagHeatmap(tagMatrix, xlim=c(-3000, 3000), color="red",title=sample_title,xlab="Distance from TSS",ylab="Peak #")
+plotAvgProf(tagMatrix, xlim=c(-3000, 3000),xlab="Genomic Region (5'->3')", ylab = "Read Count Frequency",title=sample_title)
+peakAnno <- annotatePeak(files[[3]], tssRegion=c(-3000, 3000),TxDb=txdb, annoDb="org.Hs.eg.db")
+plotAnnoPie(peakAnno)
+plotAnnoBar(peakAnno)
+vennpie(peakAnno)
+upsetplot(peakAnno)
+
+
+et <- exactTest(y)
+topTags(peaks)
+
