@@ -8,8 +8,9 @@ library(ChIPpeakAnno)
 library(statmod)
 library(tidyverse)
 library(Gviz)
-
 library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+library(org.Hs.eg.db)
+
 txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
 
 
@@ -137,9 +138,10 @@ simplified$score <- -10*log10(simplified$FDR)
 export(con="brant_results.bed", object=simplified)
 
 
-filtered = out.ranges[order(out.ranges$FDR)]
-FDR_filtered = filtered[filtered$FDR < 0.05]
+
 out.ranges = FDR_filtered
+
+readRDS(file="brant_results.rds", out.ranges)
 
 
 
@@ -167,14 +169,18 @@ prom <- suppressWarnings(promoters(txdb,upstream=3000, downstream=1000, columns=
 entrez.ids <- sapply(prom$gene_id, FUN=function(x) x[1]) # Using the first Entrez ID.
 gene.name <- select(org.Hs.eg.db, keys=entrez.ids, keytype="ENTREZID", column="SYMBOL")
 prom$gene_name <- gene.name$SYMBOL[match(entrez.ids, gene.name$ENTREZID)]
-head(prom)
+
 
 olap.out <- overlapResults(filtered.data, regions=prom, res$table)
 olap.out
 
 simple <- DataFrame(ID=prom$tx_name, Gene=prom$gene_name, olap.out$combined)
 simple[!is.na(simple$PValue),]
+simple[which(simple$Gene == "EBI3"),]
 
+sorted = simple[order(simple$FDR),]
+FDR_filtered_10 = sorted[which(sorted$FDR < 0.10),]
+FDR_filtered_01 = sorted[which(sorted$FDR < 0.01),]
 
 
 gax <- GenomeAxisTrack(col="black", fontsize=15, size=2)
@@ -190,6 +196,7 @@ sorted.ranges
 
 cur.region <- sorted.ranges[1]
 cur.region
+
 
 collected <- list()
 lib.sizes <- filtered.data$totals/1e6
