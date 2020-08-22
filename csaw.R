@@ -10,6 +10,7 @@ library(tidyverse)
 library(Gviz)
 library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 library(org.Hs.eg.db)
+library(hash)
 
 txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
 
@@ -176,11 +177,35 @@ olap.out
 
 simple <- DataFrame(ID=prom$tx_name, Gene=prom$gene_name, olap.out$combined)
 simple[!is.na(simple$PValue),]
-simple[which(simple$Gene == "EBI3"),]
+
+PRGs <- read_csv("PRGs-2.csv")
+
+PRG_mapping = hash()
+for (gene in PRGs$Gene) {
+  PRG_mapping[[gene]] =simple[which(simple$Gene == toupper(gene)),]
+}
+
+PRG_mapping = simple[0,]
+for (gene in PRGs$Gene) {
+  PRG_mapping = rbind(PRG_mapping,simple[which(simple$Gene == toupper(gene)),])
+}
+PRG_mapping_FDR10 <- PRG_mapping[which(PRG_mapping$FDR < 0.10),]
+PRG_mapping_FDR10 <- PRG_mapping_FDR10[order(PRG_mapping_FDR10$FDR),]
+
+PRG_mapping_FDR01 <- PRG_mapping[which(PRG_mapping$FDR < 0.01),]
+PRG_mapping_FDR01 <- PRG_mapping_FDR01[order(PRG_mapping_FDR01$FDR),]
+
+
+
 
 sorted = simple[order(simple$FDR),]
 FDR_filtered_10 = sorted[which(sorted$FDR < 0.10),]
 FDR_filtered_01 = sorted[which(sorted$FDR < 0.01),]
+
+
+nrow(PRG_mapping_FDR10)/length(unique(PRG_mapping$Gene))
+nrow(FDR_filtered_10)/length(unique(sorted$Gene))
+
 
 
 gax <- GenomeAxisTrack(col="black", fontsize=15, size=2)
