@@ -180,11 +180,6 @@ simple[!is.na(simple$PValue),]
 
 PRGs <- read_csv("PRGs-2.csv")
 
-PRG_mapping = hash()
-for (gene in PRGs$Gene) {
-  PRG_mapping[[gene]] =simple[which(simple$Gene == toupper(gene)),]
-}
-
 PRG_mapping = simple[0,]
 for (gene in PRGs$Gene) {
   PRG_mapping = rbind(PRG_mapping,simple[which(simple$Gene == toupper(gene)),])
@@ -194,6 +189,20 @@ PRG_mapping_FDR10 <- PRG_mapping_FDR10[order(PRG_mapping_FDR10$FDR),]
 
 PRG_mapping_FDR01 <- PRG_mapping[which(PRG_mapping$FDR < 0.01),]
 PRG_mapping_FDR01 <- PRG_mapping_FDR01[order(PRG_mapping_FDR01$FDR),]
+
+
+
+SRGs_ifnar_indep <- read_csv("SRGIIndependent.csv")
+
+SRGs_ifnar_indep_mapping = simple[0,]
+for (gene in SRGs_ifnar_indep$Gene) {
+  SRGs_ifnar_indep_mapping = rbind(SRGs_ifnar_indep_mapping,simple[which(simple$Gene == toupper(gene)),])
+}
+SRGs_ifnar_indep_mapping_FDR10 <- SRGs_ifnar_indep_mapping[which(SRGs_ifnar_indep_mapping$FDR < 0.10),]
+SRGs_ifnar_indep_mapping_FDR10 <- SRGs_ifnar_indep_mapping_FDR10[order(SRGs_ifnar_indep_mapping_FDR10$FDR),]
+
+SRGs_ifnar_indep_mapping_FDR01 <- SRGs_ifnar_indep_mapping[which(SRGs_ifnar_indep_mapping$FDR < 0.01),]
+SRGs_ifnar_indep_mapping_FDR01 <- SRGs_ifnar_indep_mapping_FDR01[order(SRGs_ifnar_indep_mapping_FDR01$FDR),]
 
 
 
