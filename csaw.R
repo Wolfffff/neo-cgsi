@@ -191,6 +191,19 @@ PRG_mapping_FDR01 <- PRG_mapping[which(PRG_mapping$FDR < 0.01),]
 PRG_mapping_FDR01 <- PRG_mapping_FDR01[order(PRG_mapping_FDR01$FDR),]
 
 
+SRGs_ifnar_dep <- read_csv("IFNARDep.csv")
+
+SRGs_ifnar_dep_mapping = simple[0,]
+for (gene in SRGs_ifnar_dep$Gene) {
+  SRGs_ifnar_dep_mapping = rbind(SRGs_ifnar_dep_mapping,simple[which(simple$Gene == toupper(gene)),])
+}
+SRGs_ifnar_dep_mapping_FDR10 <- SRGs_ifnar_dep_mapping[which(SRGs_ifnar_dep_mapping$FDR < 0.10),]
+SRGs_ifnar_dep_mapping_FDR10 <- SRGs_ifnar_dep_mapping_FDR10[order(SRGs_ifnar_dep_mapping_FDR10$FDR),]
+
+SRGs_ifnar_dep_mapping_FDR01 <- SRGs_ifnar_dep_mapping[which(SRGs_ifnar_dep_mapping$FDR < 0.01),]
+SRGs_ifnar_dep_mapping_FDR01 <- SRGs_ifnar_dep_mapping_FDR01[order(SRGs_ifnar_dep_mapping_FDR01$FDR),]
+
+
 
 SRGs_ifnar_indep <- read_csv("SRGIIndependent.csv")
 
@@ -207,12 +220,15 @@ SRGs_ifnar_indep_mapping_FDR01 <- SRGs_ifnar_indep_mapping_FDR01[order(SRGs_ifna
 
 
 
+
+
 sorted = simple[order(simple$FDR),]
 FDR_filtered_10 = sorted[which(sorted$FDR < 0.10),]
 FDR_filtered_01 = sorted[which(sorted$FDR < 0.01),]
 
 
-nrow(PRG_mapping_FDR10)/length(unique(PRG_mapping$Gene))
+(nrow(PRG_mapping_FDR10) + nrow(SRGs_ifnar_indep_mapping_FDR10) + nrow(SRGs_ifnar_dep_mapping_FDR10))/(length(unique(SRGs_ifnar_indep$Gene)) + length(unique(PRG_mapping$Gene)) + length(unique(SRGs_ifnar_dep$Gene)))
+
 nrow(FDR_filtered_10)/length(unique(sorted$Gene))
 
 
